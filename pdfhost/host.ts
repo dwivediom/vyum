@@ -163,6 +163,8 @@ async function handle(msg: { op: string; id?: number; view: number; channel?: st
   }
 }
 
+// Electron's own settings and caches go into Vyum's data folder, not a generic "Electron" folder
+if (process.env.VYUM_ELECTRON_DATA) app.setPath('userData', process.env.VYUM_ELECTRON_DATA)
 app.dock?.hide()
 app.on('window-all-closed', () => { /* stay alive: Vyum owns this process */ })
 void app.whenReady().then(() => {

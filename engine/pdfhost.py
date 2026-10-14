@@ -65,6 +65,7 @@ class PdfHost:
         self.ready.clear()
         env = {**os.environ, "NODE_PATH": str(GO_ROOT / "node_modules"), "ELECTRON_NO_ATTACH_CONSOLE": "1",
                "VYUM_GENOFFICE_SRC": str(GO_ROOT),  # where GenOffice's wasm files are found
+               "VYUM_ELECTRON_DATA": str(config.DATA_DIR / "pdfhost"),
                # GenOffice's AI features run on Vyum's on-device model
                "VYUM_AI_URL": config.LLM_BASE_URL, "VYUM_AI_MODEL": config.GEN_MODEL}
         self.proc = subprocess.Popen([str(ELECTRON), str(HOST)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,

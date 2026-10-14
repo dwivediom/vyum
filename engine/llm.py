@@ -69,13 +69,26 @@ def chat_stream(messages, *, model=None, think=False, max_tokens=config.GEN_MAX_
                     in_tag = not in_tag
 
 
+def _parse_json(raw: str) -> dict | None:
+    for text in (raw, (re.search(r"\{.*\}", raw, re.DOTALL) or [None])[0]):
+        if text:
+            try:
+                data = json.loads(text)
+                return data if isinstance(data, dict) else {"items": data}
+            except json.JSONDecodeError:
+                pass
+    return None
+
+
 def chat_json(messages, **kw):
+    """The model's JSON reply as a dict. A cut-off or malformed reply (smaller models do this) is asked for once more
+    with more room; if it is still unreadable the caller gets {} and falls back, instead of the request failing."""
     raw = chat(messages, json_mode=True, **kw)
-    try:
-        return json.loads(raw)
-    except json.JSONDecodeError:
-        m = re.search(r"\{.*\}", raw, re.DOTALL)
-        return json.loads(m.group(0)) if m else {}
+    data = _parse_json(raw)
+    if data is None:
+        kw["max_tokens"] = int(kw.get("max_tokens", config.GEN_MAX_TOKENS) * 2)
+        data = _parse_json(chat(messages, json_mode=True, **kw))
+    return data or {}
 
 
 def describe_image(png_bytes: bytes, prompt: str) -> str:

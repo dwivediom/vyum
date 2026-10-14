@@ -52,6 +52,10 @@ def python_runtime():
     run("uv", "pip", "install", "--python", py, "--break-system-packages", "--link-mode=copy", "--compile-bytecode",
         "-r", lock)
     prune(dst)
+    # the OCR models (Latin + Indian scripts, Apache-2.0, ~40 MB) ship inside the rapidocr package: fetched now,
+    # so the installed app never writes into its own (read-only) folder
+    env = {k: v for k, v in os.environ.items() if not k.startswith("VYUM_")}
+    run(py, "-c", "from engine import ocr; ocr.preload()", cwd=ROOT, env=env)
     marker = next(dst.glob("lib/python3*/EXTERNALLY-MANAGED"), None) or (dst / "Lib" / "EXTERNALLY-MANAGED")
     if marker.exists():
         marker.unlink()

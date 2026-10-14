@@ -37,9 +37,9 @@ DATA_DIR = Path(os.environ.get("VYUM_DATA", _default_data_dir()))
 MODELS_DIR = Path(os.environ.get("VYUM_MODELS", DATA_DIR / "models" if PACKAGED else Path.home() / ".cache"))
 # Docling layout, table and RapidOCR models.
 DOCLING_MODELS = Path(os.environ.get("VYUM_DOCLING_MODELS", MODELS_DIR / ("docling" if PACKAGED else "docling/models")))
-# RapidOCR's Indian-script models (None: inside the rapidocr package, as in a source checkout).
-OCR_MODELS = Path(os.environ["VYUM_OCR_MODELS"]) if os.environ.get("VYUM_OCR_MODELS") else \
-    (MODELS_DIR / "ocr" if PACKAGED else None)
+# RapidOCR's models (40 MB) live inside the rapidocr package: an installed app ships them (the build downloads them,
+# scripts/package/assemble.py), so they are never written at run time. VYUM_OCR_MODELS points elsewhere if needed.
+OCR_MODELS = Path(os.environ["VYUM_OCR_MODELS"]) if os.environ.get("VYUM_OCR_MODELS") else None
 
 # Ingest
 CHUNKER_VERSION = 3  # 3: streamed ingest, two-level heading paths, headers/footers removed, line numbers for text

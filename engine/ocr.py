@@ -17,8 +17,7 @@ def _engine(script: str | None):
     from rapidocr import RapidOCR
     from rapidocr.utils.typings import LangRec, ModelType, OCRVersion
     params = {"Global.log_level": "error"}
-    if config.OCR_MODELS:  # installed app: models live in Vyum's data folder (the app's own folder is read-only)
-        config.OCR_MODELS.mkdir(parents=True, exist_ok=True)
+    if config.OCR_MODELS:
         params["Global.model_root_dir"] = str(config.OCR_MODELS)
     if script:
         lang_name, version = SCRIPTS[script]

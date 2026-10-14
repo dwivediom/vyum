@@ -1,13 +1,14 @@
 # Builds Vyum's installers on GitHub's machines and publishes them as a GitHub release.
 #   Windows: Vyum_<version>_x64-setup.exe     macOS (Apple Silicon, 14+): Vyum-<version>-mac-arm64.dmg
-# Push a tag like v0.1.0 to build and publish; "Run workflow" in the Actions tab builds without publishing.
+# A push to main builds both (download them from the run page); a tag like v0.1.0 also publishes the release.
 # Both are unsigned test builds for now (see RELEASE_NOTES.md for how to open them).
 name: Release
 
 on:
   workflow_dispatch:
   push:
-    tags: ["v*"]
+    branches: [main]     # builds only (artifacts on the run page)
+    tags: ["v*"]         # builds and publishes the release
 
 permissions:
   contents: write

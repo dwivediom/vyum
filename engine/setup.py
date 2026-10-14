@@ -29,13 +29,14 @@ OLLAMA_FILES = {  # platform -> (release file, sha256 from the release's sha256s
 }
 TIERS = {  # name -> (Ollama model, Vyum alias with an 8K context, download bytes)
     "8b": ("qwen3:8b", "vyum-qwen3-8b", 5_200_000_000),
-    "4b": ("qwen3:4b", "vyum-qwen3-4b", 2_500_000_000),
+    # the instruct edition: plain "qwen3:4b" is now the thinking-only 2507 model, which always reasons first and
+    # loops in JSON mode
+    "4b": ("qwen3:4b-instruct-2507-q4_K_M", "vyum-qwen3-4b", 2_500_000_000),
 }
 EMBED = ("bge-m3", 1_200_000_000)
 VISION = ("qwen2.5vl:7b", "vyum-qwen25vl-7b", 6_000_000_000)
 RERANKER_BYTES = 2_270_000_000
 DOCLING_BYTES = 520_000_000
-OCR_BYTES = 40_000_000
 
 
 # what this computer gets ---------------------------------------------------------------------------------------------
@@ -112,11 +113,6 @@ def _docling_ready() -> bool:
     return (d / "docling-project--docling-layout-heron").is_dir() and (d / "docling-project--docling-models").is_dir()
 
 
-def _ocr_ready() -> bool:
-    d = config.OCR_MODELS
-    return bool(d and d.is_dir() and list(d.glob("*devanagari*rec*.onnx")))
-
-
 def items(with_vision: bool | None = None) -> list[dict]:
     """Everything setup installs, in order, with whether it is already here."""
     if with_vision is None:
@@ -132,7 +128,6 @@ def items(with_vision: bool | None = None) -> list[dict]:
         {"id": "embed", "label": "Search model (BGE-M3)", "bytes": EMBED[1], "done": _ollama_has(EMBED[0])},
         {"id": "reranker", "label": "Answer checker (BGE reranker)", "bytes": RERANKER_BYTES, "done": _reranker_ready()},
         {"id": "docling", "label": "Document reader (Docling)", "bytes": DOCLING_BYTES, "done": _docling_ready()},
-        {"id": "ocr", "label": "Scan reader for Indian scripts (OCR)", "bytes": OCR_BYTES, "done": _ocr_ready()},
     ]
     if with_vision:
         out.append({"id": "vision", "label": "Picture reader (Qwen2.5-VL, optional)", "bytes": VISION[2],
@@ -365,9 +360,6 @@ def run():
             _grow("docling", config.DOCLING_MODELS, DOCLING_BYTES,
                   lambda: download_models(output_dir=config.DOCLING_MODELS, with_layout=True, with_tableformer=True,
                                           with_code_formula=False, with_picture_classifier=False, with_rapidocr=True))
-        if "ocr" in todo:
-            from . import ocr
-            _grow("ocr", config.OCR_MODELS, OCR_BYTES, ocr.preload)
         if "vision" in todo:
             _pull(VISION[0], "vision", VISION[1])
     except Exception as e:

@@ -35,6 +35,11 @@ def main():
     os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
     os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
 
+    import signal
+    import sys
+    # a plain kill (SIGTERM) still runs the exit handlers that stop the model server and the PDF editor host
+    signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
+
     import uvicorn
     from .api import app
 

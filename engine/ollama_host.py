@@ -53,11 +53,39 @@ def start() -> bool:
         if not binary().exists():
             return False
         models_dir().mkdir(parents=True, exist_ok=True)
+        _stop_leftover()
         log = open(config.DATA_DIR / "ollama.log", "ab")
         _proc = subprocess.Popen([str(binary()), "serve"], env=env(), stdout=log, stderr=log,
                                  creationflags=config.NO_WINDOW)
+        _pid_file().write_text(str(_proc.pid))
         atexit.register(stop)
         return True
+
+
+def _pid_file() -> Path:
+    return config.DATA_DIR / "ollama.pid"
+
+
+def _stop_leftover():
+    """A previous engine that crashed or was killed left its model server running: stop it (only if it is ours)."""
+    try:
+        pid = int(_pid_file().read_text())
+    except (OSError, ValueError):
+        return
+    try:
+        if config.WINDOWS:
+            out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/FO", "CSV", "/NH"], capture_output=True,
+                                 text=True, creationflags=config.NO_WINDOW).stdout
+            if "ollama" in out.lower():
+                subprocess.run(["taskkill", "/PID", str(pid), "/T", "/F"], capture_output=True,
+                               creationflags=config.NO_WINDOW)
+        else:
+            cmd = subprocess.run(["ps", "-p", str(pid), "-o", "command="], capture_output=True, text=True).stdout
+            if str(binary()) in cmd:
+                os.kill(pid, 15)
+    except Exception:
+        pass
+    _pid_file().unlink(missing_ok=True)
 
 
 def stop():
@@ -70,3 +98,4 @@ def stop():
             except subprocess.TimeoutExpired:
                 _proc.kill()
         _proc = None
+        _pid_file().unlink(missing_ok=True)
