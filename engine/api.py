@@ -153,12 +153,42 @@ def job(job_id: str):
 def health():
     try:
         have = llm.available_models()
-        models = {m: any(h == m or h.startswith(m + ":") for h in have)
-                  for m in (config.GEN_MODEL, config.VISION_MODEL, config.EMBED_MODEL)}
+        needed = (config.GEN_MODEL, config.EMBED_MODEL) + ((config.VISION_MODEL,) if config.DESCRIBE_FIGURES else ())
+        models = {m: any(h == m or h.startswith(m + ":") for h in have) for m in needed}
         ok = all(models.values())
     except Exception as e:  # model server down
         models, ok = {"error": str(e)}, False
     return {"ok": ok, "models": models, "documents": len(store.documents())}
+
+
+class SetupStart(BaseModel):
+    vision: bool = False
+
+
+@app.get("/setup")
+def setup_status():
+    """First launch of an installed Vyum: what still has to be downloaded (always ready in a source checkout)."""
+    from . import setup
+    return setup.status()
+
+
+@app.post("/setup")
+def setup_start(req: SetupStart):
+    from . import setup
+    return setup.start(req.vision)
+
+
+@app.post("/shutdown")
+def shutdown():
+    """The app is quitting: stop the model server and the PDF editor host before the engine itself is stopped."""
+    from . import ollama_host
+    ollama_host.stop()
+    try:
+        from .pdfhost import HOST_PROCESS
+        HOST_PROCESS.stop()
+    except Exception:
+        pass
+    return {"ok": True}
 
 
 class MailDraft(BaseModel):
@@ -405,8 +435,7 @@ def office_open(fid: str):
 @app.post("/office/{fid}/reveal")
 def office_reveal(fid: str):
     office, it = _office_or_404(fid)
-    import subprocess
-    subprocess.Popen(["open", "-R", it["path"]])
+    _reveal(Path(it["path"]))
     return {"ok": True}
 
 
@@ -757,9 +786,19 @@ def reveal_export(req: Reveal):
     p = Path(req.path).resolve()
     if (config.OFFICE_DIR / "Exports").resolve() not in p.parents:
         raise HTTPException(400, "Only exported files.")
-    import subprocess
-    subprocess.Popen(["open", "-R", str(p)])
+    _reveal(p)
     return {"ok": True}
+
+
+def _reveal(p: Path):
+    """Shows the file selected in Finder (macOS) or File Explorer (Windows)."""
+    import subprocess
+    if config.WINDOWS:
+        subprocess.Popen(["explorer", f"/select,{p}"])
+    elif config.MAC:
+        subprocess.Popen(["open", "-R", str(p)])
+    else:
+        subprocess.Popen(["xdg-open", str(p.parent)])
 
 
 @app.delete("/office/{fid}/dashboards/{did}")

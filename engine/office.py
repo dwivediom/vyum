@@ -31,8 +31,21 @@ class OfficeError(RuntimeError):
 
 
 # GenOffice ------------------------------------------------------------------------------------------------------
+def _app_binary() -> Path:
+    """GenOffice's own program: on macOS inside GenOffice.app, on Windows GenOffice.exe in its folder."""
+    if config.MAC:
+        return config.GENOFFICE_APP / "Contents/MacOS/GenOffice"
+    return config.GENOFFICE_APP / ("GenOffice.exe" if config.WINDOWS else "genoffice")
+
+
 def _cli_path() -> Path:
-    return config.GENOFFICE_APP / "Contents/Resources/cli/genoffice"
+    """The `genoffice` command line (a Node script); it runs on GenOffice's own runtime (ELECTRON_RUN_AS_NODE)."""
+    res = config.GENOFFICE_APP / ("Contents/Resources" if config.MAC else "resources")
+    return res / "cli" / "genoffice.cjs"
+
+
+def _cli_cmd(*args) -> list[str]:
+    return [str(_app_binary()), str(_cli_path()), *map(str, args)]
 
 
 def status() -> dict:
@@ -42,15 +55,15 @@ def status() -> dict:
 
 def _env() -> dict:
     # Use Vyum's own GenOffice build and settings folder, never another copy that may be installed.
-    return {**os.environ, "GENOFFICE_APP_BIN": str(config.GENOFFICE_APP / "Contents/MacOS/GenOffice"),
+    return {**os.environ, "GENOFFICE_APP_BIN": str(_app_binary()), "ELECTRON_RUN_AS_NODE": "1",
             "GENOFFICE_USER_DATA": str(config.DATA_DIR / "genoffice")}
 
 
 def cli(*args, timeout=180) -> dict:
     if not _cli_path().exists():
         raise OfficeError("Vyum's office engine is not installed. Run scripts/build_genoffice.sh once.")
-    proc = subprocess.run([str(_cli_path()), *map(str, args), "--json"], capture_output=True, text=True,
-                          timeout=timeout, env=_env())
+    proc = subprocess.run(_cli_cmd(*args, "--json"), capture_output=True, text=True, encoding="utf-8",
+                          errors="replace", timeout=timeout, env=_env(), creationflags=config.NO_WINDOW)
     out = proc.stdout.strip().splitlines()
     try:
         data = json.loads(out[-1]) if out else {}
@@ -66,8 +79,8 @@ def cli(*args, timeout=180) -> dict:
 
 def open_in_genoffice(path: Path):
     """Hands the file to the GenOffice editor window."""
-    subprocess.Popen([str(_cli_path()), "open", str(path)], env=_env(), stdout=subprocess.DEVNULL,
-                     stderr=subprocess.DEVNULL, start_new_session=True)
+    subprocess.Popen(_cli_cmd("open", path), env=_env(), stdout=subprocess.DEVNULL,
+                     stderr=subprocess.DEVNULL, start_new_session=not config.WINDOWS, creationflags=config.NO_WINDOW)
 
 
 # registry -------------------------------------------------------------------------------------------------------

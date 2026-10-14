@@ -1,0 +1,14 @@
+# What the installed app needs (no test or eval tools). Pinned per platform in requirements-<platform>.lock,
+# made with scripts/package/lock.sh from the versions Vyum is tested with.
+fastapi
+uvicorn[standard]
+lancedb
+pyarrow
+docling
+sentence-transformers
+httpx
+python-multipart
+python-calamine>=0.8
+keyring>=25
+onnxruntime>=1.20
+huggingface_hub

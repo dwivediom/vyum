@@ -14,3 +14,4 @@ evals/results*.json
 pdfhost/dist/
 evals/large/
 .DS_Store
+build/

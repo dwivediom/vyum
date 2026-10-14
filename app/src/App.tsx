@@ -1,8 +1,9 @@
 import { lang as uiLang, setLang, t } from "./i18n";
+import { Setup } from "./Setup";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   api, connect, inTauri, openExternal, type Chat, type ChatSummary, type CalcStep, type Citation, type Command, type Doc, type Health, type Job,
-  type OfficeFile, type Project, type Result, type Settings, type Source,
+  type OfficeFile, type Project, type Result, type Settings, type SetupStatus, type Source,
 } from "./api";
 import Composer, { type Attachment, type Mode } from "./Composer";
 import DocsWorkspace from "./Docs";
@@ -38,7 +39,8 @@ const ago = (ts: number | null) => {
 };
 
 export default function App() {
-  const [phase, setPhase] = useState<"connecting" | "ready" | "failed">("connecting");
+  const [phase, setPhase] = useState<"connecting" | "setup" | "ready" | "failed">("connecting");
+  const [setup, setSetup] = useState<SetupStatus | null>(null);
   const [failure, setFailure] = useState("");
   const [health, setHealth] = useState<Health | null>(null);
   const [commands, setCommands] = useState<Command[]>([]);
@@ -85,6 +87,8 @@ export default function App() {
   useEffect(() => {
     connect()
       .then(async () => {
+        const st = await api.setupStatus().catch(() => null);
+        if (st && st.packaged && !st.ready) { setSetup(st); setPhase("setup"); return; }  // first launch: models
         const [h, cmds] = await Promise.all([api.health(), api.commands()]);
         setHealth(h); setCommands(cmds);
         await refreshLists();
@@ -245,6 +249,7 @@ export default function App() {
     await refreshLists();
   };
 
+  if (phase === "setup" && setup) return <Setup initial={setup} onReady={() => window.location.reload()} />;
   if (phase !== "ready") {
     return (
       <div className="splash">

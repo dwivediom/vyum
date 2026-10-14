@@ -10,6 +10,8 @@ PACKAGED = RESOURCES is not None
 WINDOWS = sys.platform == "win32"
 MAC = sys.platform == "darwin"
 REPO = Path(__file__).resolve().parents[1]
+# child processes on Windows open no console window
+NO_WINDOW = 0x08000000 if WINDOWS else 0  # subprocess.CREATE_NO_WINDOW
 
 
 def _default_data_dir() -> Path:

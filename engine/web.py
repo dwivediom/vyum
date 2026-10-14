@@ -73,8 +73,8 @@ def start_local() -> bool:
     with _lock:
         proc = _local["proc"]
         if proc is None or proc.poll() is not None:
-            if not (config.SEARXNG_DIR / ".venv/bin/python").exists():
-                return False
+            if config.PACKAGED or config.WINDOWS or not (config.SEARXNG_DIR / ".venv/bin/python").exists():
+                return False  # SearXNG (AGPL) is not shipped; source checkouts on macOS can run their own
             log = open(config.DATA_DIR / "searxng.log", "ab")
             proc = _local["proc"] = subprocess.Popen(["/bin/zsh", str(config.SEARXNG_START)], stdout=log, stderr=log,
                                                      env={**os.environ, "SEARXNG_DIR": str(config.SEARXNG_DIR)})

@@ -1,0 +1,23 @@
+{
+  "bundle": {
+    "targets": [
+      "nsis"
+    ],
+    "resources": {
+      "../../build/resources/runtime/": "runtime/",
+      "../../build/resources/engine/": "engine/",
+      "../../build/resources/genoffice/": "genoffice/",
+      "../../build/resources/pdfhost/": "pdfhost/",
+      "../../build/resources/licenses/": "licenses/"
+    },
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "compression": "lzma"
+      },
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      }
+    }
+  }
+}

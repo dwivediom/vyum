@@ -120,6 +120,10 @@ export type Project = {
   files: ProjectFile[]; scan: Job | null;
 };
 export type Health = { ok: boolean; models: Record<string, boolean | string>; documents: number };
+/** First launch of an installed app: the models still to download (engine/setup.py). */
+export type SetupItem = { id: string; label: string; bytes: number; done: boolean; got?: number; state?: string };
+export type SetupStatus = { packaged: boolean; ready: boolean; running?: boolean; error?: string | null; tier?: string;
+  ram_gb?: number; vision: boolean; items: SetupItem[]; total_bytes?: number };
 
 export type StreamEvent =
   | { type: "status"; text: string }
@@ -201,6 +205,8 @@ async function stream<E>(path: string, body: unknown, onEvent: (e: E) => void, s
 
 export const api = {
   health: () => call<Health>("/health"),
+  setupStatus: () => call<SetupStatus>("/setup"),
+  setupStart: (vision: boolean) => call<SetupStatus>("/setup", json("POST", { vision })),
   commands: () => call<Command[]>("/commands"),
   documents: () => call<Doc[]>("/documents"),
   job: (id: string) => call<Job>(`/jobs/${id}`),

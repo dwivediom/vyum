@@ -17,10 +17,20 @@ from pathlib import Path
 from . import config
 
 ROOT = Path(__file__).resolve().parents[1]
-HOST = ROOT / "pdfhost" / "dist" / "host.cjs"
-BRIDGE = ROOT / "pdfhost" / "dist" / "vyum-bridge.js"
-RENDERER = config.GENOFFICE_SRC / "apps" / "pdf" / "out" / "renderer"
-ELECTRON = config.GENOFFICE_SRC / "node_modules" / "electron" / "dist" / "Electron.app" / "Contents" / "MacOS" / "Electron"
+if config.PACKAGED:
+    # installed app (scripts/package/assemble.py): pdfhost/{host.cjs, vyum-bridge.js, renderer/, electron/, go/}, where
+    # go/ mirrors the bits of GenOffice's tree the host loads at run time (its wasm packages under go/node_modules)
+    _PH = config.RESOURCES / "pdfhost"
+    HOST, BRIDGE, RENDERER, GO_ROOT = _PH / "host.cjs", _PH / "vyum-bridge.js", _PH / "renderer", _PH / "go"
+    _EL = _PH / "electron"
+else:
+    HOST = ROOT / "pdfhost" / "dist" / "host.cjs"
+    BRIDGE = ROOT / "pdfhost" / "dist" / "vyum-bridge.js"
+    RENDERER = config.GENOFFICE_SRC / "apps" / "pdf" / "out" / "renderer"
+    GO_ROOT = config.GENOFFICE_SRC
+    _EL = config.GENOFFICE_SRC / "node_modules" / "electron" / "dist"
+ELECTRON = _EL / "Electron.app" / "Contents" / "MacOS" / "Electron" if config.MAC else _EL / (
+    "electron.exe" if config.WINDOWS else "electron")
 # channels that write the PDF: Vyum keeps an undo version before the first one in each editing session
 WRITES = {"pdf:save", "pdf:insert-pdf", "pdf:insert-blank-page", "pdf:merge-pages", "pdf:replace-pages",
           "pdf:set-page-size", "pdf:split-pages", "pdf:crop-pages", "pdf:request-redaction-copy"}
@@ -53,15 +63,21 @@ class PdfHost:
         if why:
             raise PdfHostError(why)
         self.ready.clear()
-        env = {**os.environ, "NODE_PATH": str(config.GENOFFICE_SRC / "node_modules"), "ELECTRON_NO_ATTACH_CONSOLE": "1",
-               "VYUM_GENOFFICE_SRC": str(config.GENOFFICE_SRC),  # where GenOffice's wasm files are found
+        env = {**os.environ, "NODE_PATH": str(GO_ROOT / "node_modules"), "ELECTRON_NO_ATTACH_CONSOLE": "1",
+               "VYUM_GENOFFICE_SRC": str(GO_ROOT),  # where GenOffice's wasm files are found
                # GenOffice's AI features run on Vyum's on-device model
                "VYUM_AI_URL": config.LLM_BASE_URL, "VYUM_AI_MODEL": config.GEN_MODEL}
         self.proc = subprocess.Popen([str(ELECTRON), str(HOST)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                     stderr=subprocess.DEVNULL, env=env, text=True, bufsize=1)
+                                     stderr=subprocess.DEVNULL, env=env, text=True, encoding="utf-8", bufsize=1,
+                                     creationflags=config.NO_WINDOW)
         threading.Thread(target=self._read, args=(self.proc,), daemon=True).start()
         if not self.ready.wait(30):
             raise PdfHostError("The PDF editor did not start.")
+
+    def stop(self):
+        if self.proc and self.proc.poll() is None:
+            self.proc.terminate()
+        self.proc = None
 
     def _read(self, proc):
         for line in proc.stdout:

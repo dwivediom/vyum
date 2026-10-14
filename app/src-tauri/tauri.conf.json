@@ -25,7 +25,20 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["app", "dmg"],
-    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.png"]
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico",
+      "icons/icon.png"
+    ],
+    "publisher": "Vyum",
+    "copyright": "© 2026 Vyum",
+    "shortDescription": "Offline document AI",
+    "macOS": {
+      "minimumSystemVersion": "14.0"
+    }
   }
 }

@@ -1,0 +1,120 @@
+# Builds Vyum's installers on GitHub's machines and publishes them as a GitHub release.
+#   Windows: Vyum_<version>_x64-setup.exe     macOS (Apple Silicon, 14+): Vyum-<version>-mac-arm64.dmg
+# Push a tag like v0.1.0 to build and publish; "Run workflow" in the Actions tab builds without publishing.
+# Both are unsigned test builds for now (see RELEASE_NOTES.md for how to open them).
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+env:
+  # GenOffice (Apache-2.0), built from source at a pinned commit: source builds have no analytics and no updater.
+  GENOFFICE_REF: c8e9467c4101818e070644e1667bad48d4a2e1df
+  CSC_IDENTITY_AUTO_DISCOVERY: "false"
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+        with: { path: vyum }
+      - uses: actions/checkout@v4
+        with: { repository: genspark-ai/genoffice, ref: "${{ env.GENOFFICE_REF }}", path: genoffice }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: dtolnay/rust-toolchain@stable
+        with: { targets: x86_64-pc-windows-msvc }
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Build GenOffice
+        shell: bash
+        working-directory: genoffice
+        run: |
+          npm ci --no-audit --no-fund
+          # the sheets helper, statically linked (no VC++ runtime needed), placed where GenOffice's packager looks
+          XL=apps/sheets/native/xlsx-engine
+          cargo build --release --target x86_64-pc-windows-msvc --manifest-path $XL/Cargo.toml --config $XL/.cargo/config.toml
+          mkdir -p $XL/target/x86_64-pc-windows-gnu/release
+          cp $XL/target/x86_64-pc-windows-msvc/release/xlsx-sidecar.exe $XL/target/x86_64-pc-windows-gnu/release/
+          npm run notices
+          npm run build:all
+          cd apps/shell && npx electron-builder --win dir --x64 --publish never
+
+      - name: PDF editor host
+        working-directory: vyum
+        run: node pdfhost/build.mjs ../genoffice
+
+      - name: Assemble the app's runtime
+        working-directory: vyum
+        run: uv run --no-project --python 3.12 python scripts/package/assemble.py
+
+      - name: Build the installer
+        working-directory: vyum/app
+        run: |
+          npm ci --no-audit --no-fund
+          npx tauri build
+
+      - name: Collect
+        shell: bash
+        run: |
+          mkdir out
+          cp vyum/app/src-tauri/target/release/bundle/nsis/*-setup.exe out/
+          cd out && for f in *.exe; do sha256sum "$f" > "$f.sha256"; done && ls -la
+
+      - uses: actions/upload-artifact@v4
+        with: { name: vyum-windows, path: out/* }
+
+  mac:
+    runs-on: macos-14   # Apple Silicon
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+        with: { path: vyum }
+      - uses: actions/checkout@v4
+        with: { repository: genspark-ai/genoffice, ref: "${{ env.GENOFFICE_REF }}", path: genoffice }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Build GenOffice
+        working-directory: genoffice
+        run: |
+          npm ci --no-audit --no-fund
+          npm run native:build -w @genoffice/sheets
+          npm run notices
+          npm run build:all
+          cd apps/shell && npx electron-builder --mac dir --arm64 --publish never
+
+      - name: Build the app and the dmg
+        working-directory: vyum
+        run: scripts/package/build_mac.sh
+
+      - name: Collect
+        run: |
+          mkdir out
+          cp vyum/build/*.dmg vyum/build/*.dmg.sha256 out/
+          ls -la out
+
+      - uses: actions/upload-artifact@v4
+        with: { name: vyum-mac, path: out/* }
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [windows, mac]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { path: out, merge-multiple: true }
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: Vyum ${{ github.ref_name }}
+          body_path: RELEASE_NOTES.md
+          files: out/*
