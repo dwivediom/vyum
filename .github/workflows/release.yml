@@ -110,13 +110,18 @@ jobs:
         with: { name: vyum-mac, path: out/* }
 
   release:
-    if: startsWith(github.ref, 'refs/tags/')
+    # publishes whichever installers built (the Mac one is required); a missing one can be added by a later tag
+    if: always() && startsWith(github.ref, 'refs/tags/') && needs.mac.result == 'success'
     needs: [windows, mac]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with: { path: out, merge-multiple: true }
+      - name: Note when Windows is not in this release
+        if: needs.windows.result != 'success'
+        run: |
+          printf '\n> **Windows:** the Windows installer is not ready yet; it will be added in a following release.\n' >> RELEASE_NOTES.md
       - uses: softprops/action-gh-release@v2
         with:
           name: Vyum ${{ github.ref_name }}
