@@ -1,0 +1,28 @@
+# SearXNG for Vyum's web search: private, local only, JSON results on.
+use_default_settings: true
+
+general:
+  instance_name: "Vyum search"
+  enable_metrics: false
+
+server:
+  bind_address: "127.0.0.1"   # never reachable from other machines
+  port: 8888
+  secret_key: "set-by-start-script"   # replaced at start by SEARXNG_SECRET
+  limiter: false              # only Vyum on this Mac talks to it
+  public_instance: false
+  image_proxy: false
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  formats:
+    - html
+    - json                    # Vyum reads results as JSON
+
+outgoing:
+  request_timeout: 4.0
+  max_request_timeout: 8.0
+
+valkey:
+  url: false

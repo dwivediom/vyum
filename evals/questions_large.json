@@ -1,0 +1,472 @@
+[
+ {
+  "q": "When was the backup generator at the Tromsø depot replaced, and what did it cost?",
+  "expect": [
+   [
+    "14 March 2021"
+   ],
+   [
+    "412,750"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   19
+  ],
+  "depth": 0.031,
+  "type": "needle"
+ },
+ {
+  "q": "How many spare-parts units must the supplier keep at its Gdańsk warehouse under Supplier Agreement No. 00025?",
+  "expect": [
+   [
+    "3,250",
+    "3250"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   42
+  ],
+  "depth": 0.064,
+  "type": "needle"
+ },
+ {
+  "q": "What is the access code for vault 7 at the Narvik depot?",
+  "expect": [
+   [
+    "QX-4471-B"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   71
+  ],
+  "depth": 0.113,
+  "type": "needle"
+ },
+ {
+  "q": "What rebate does the buyer receive on rail shipments from Kiruna under Supplier Agreement No. 00060?",
+  "expect": [
+   [
+    "2.35%"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   98
+  ],
+  "depth": 0.151,
+  "type": "needle"
+ },
+ {
+  "q": "Who was the night supervisor at the Bodø depot who reported the roof membrane replacement?",
+  "expect": [
+   [
+    "Ingrid Solheim"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   126
+  ],
+  "depth": 0.196,
+  "type": "needle"
+ },
+ {
+  "q": "What temperature rating must containers for the Svalbard site meet under Supplier Agreement No. 00093?",
+  "expect": [
+   [
+    "40"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   153
+  ],
+  "depth": 0.239,
+  "type": "needle"
+ },
+ {
+  "q": "How much salmon was moved to Molde when the Ålesund cold-storage compressor failed?",
+  "expect": [
+   [
+    "1,180",
+    "1180"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   184
+  ],
+  "depth": 0.288,
+  "type": "needle"
+ },
+ {
+  "q": "Who is the dedicated account manager under Supplier Agreement No. 00128?",
+  "expect": [
+   [
+    "Zieliński",
+    "Zielinski"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   209
+  ],
+  "depth": 0.326,
+  "type": "needle"
+ },
+ {
+  "q": "What was the auditor reference for the Stavanger depot's ISO 14001 surveillance audit?",
+  "expect": [
+   [
+    "NV-2207-981"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   237
+  ],
+  "depth": 0.371,
+  "type": "needle"
+ },
+ {
+  "q": "What is the daily penalty for late delivery to the Hammerfest terminal under Supplier Agreement No. 00161?",
+  "expect": [
+   [
+    "1,875",
+    "1875"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   265
+  ],
+  "depth": 0.413,
+  "type": "needle"
+ },
+ {
+  "q": "How many hydrogen fuel-cell forklifts were delivered to the Tromsø depot?",
+  "expect": [
+   [
+    "14"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   295
+  ],
+  "depth": 0.463,
+  "type": "needle"
+ },
+ {
+  "q": "What minimum share of recycled fibre must packaging contain under Supplier Agreement No. 00195?",
+  "expect": [
+   [
+    "68%"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   320
+  ],
+  "depth": 0.499,
+  "type": "needle"
+ },
+ {
+  "q": "How quickly was the ransomware alert at the Narvik depot contained?",
+  "expect": [
+   [
+    "47 minutes"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   350
+  ],
+  "depth": 0.546,
+  "type": "needle"
+ },
+ {
+  "q": "What maximum lead time does the supplier guarantee for orders placed before 1 October under Supplier Agreement No. 00229?",
+  "expect": [
+   [
+    "11 business days",
+    "11"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   378
+  ],
+  "depth": 0.589,
+  "type": "needle"
+ },
+ {
+  "q": "How many solar panels were installed at the Bodø depot?",
+  "expect": [
+   [
+    "312"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   410
+  ],
+  "depth": 0.638,
+  "type": "needle"
+ },
+ {
+  "q": "Where must disputes first be referred to mediation under Supplier Agreement No. 00263?",
+  "expect": [
+   [
+    "Arctic Trade Chamber"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   433
+  ],
+  "depth": 0.674,
+  "type": "needle"
+ },
+ {
+  "q": "Which contractor cleaned up the hydraulic oil spill at the Ålesund depot?",
+  "expect": [
+   [
+    "Vestmiljø"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   461
+  ],
+  "depth": 0.721,
+  "type": "needle"
+ },
+ {
+  "q": "What minimum cyber insurance cover must the supplier carry under Supplier Agreement No. 00297?",
+  "expect": [
+   [
+    "6,400,000",
+    "6.4 million"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   491
+  ],
+  "depth": 0.765,
+  "type": "needle"
+ },
+ {
+  "q": "How many pallet positions does the new automated cold store at the Stavanger depot hold?",
+  "expect": [
+   [
+    "9,600",
+    "9600"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   522
+  ],
+  "depth": 0.815,
+  "type": "needle"
+ },
+ {
+  "q": "Within how many days may the buyer return unsold seasonal goods under Supplier Agreement No. 00330?",
+  "expect": [
+   [
+    "120"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   545
+  ],
+  "depth": 0.849,
+  "type": "needle"
+ },
+ {
+  "q": "What is the late payment interest under Supplier Agreement No. 00015?",
+  "expect": [
+   [
+    "2.5%"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   23
+  ],
+  "depth": 0.044,
+  "type": "distractor"
+ },
+ {
+  "q": "How long is the warranty under Supplier Agreement No. 00034?",
+  "expect": [
+   [
+    "30 months"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   55
+  ],
+  "depth": 0.1,
+  "type": "distractor"
+ },
+ {
+  "q": "Which law governs Supplier Agreement No. 00103?",
+  "expect": [
+   [
+    "England and Wales"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   169
+  ],
+  "depth": 0.302,
+  "type": "distractor"
+ },
+ {
+  "q": "How much notice is needed to terminate Supplier Agreement No. 00198 for convenience?",
+  "expect": [
+   [
+    "30 days"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   326
+  ],
+  "depth": 0.581,
+  "type": "distractor"
+ },
+ {
+  "q": "What is the liability cap under Supplier Agreement No. 00200?",
+  "expect": [
+   [
+    "1,765,000"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   328
+  ],
+  "depth": 0.587,
+  "type": "distractor"
+ },
+ {
+  "q": "What is the late payment interest under Supplier Agreement No. 00215?",
+  "expect": [
+   [
+    "1.0%"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   353
+  ],
+  "depth": 0.63,
+  "type": "distractor"
+ },
+ {
+  "q": "How long is the warranty under Supplier Agreement No. 00243?",
+  "expect": [
+   [
+    "12 months"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   400
+  ],
+  "depth": 0.713,
+  "type": "distractor"
+ },
+ {
+  "q": "Which law governs Supplier Agreement No. 00258?",
+  "expect": [
+   [
+    "the Netherlands"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   425
+  ],
+  "depth": 0.757,
+  "type": "distractor"
+ },
+ {
+  "q": "How much notice is needed to terminate Supplier Agreement No. 00288 for convenience?",
+  "expect": [
+   [
+    "180 days"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   474
+  ],
+  "depth": 0.845,
+  "type": "distractor"
+ },
+ {
+  "q": "What is the liability cap under Supplier Agreement No. 00320?",
+  "expect": [
+   [
+    "4,101,000"
+   ]
+  ],
+  "doc": "northwind",
+  "page": [
+   527
+  ],
+  "depth": 0.938,
+  "type": "distractor"
+ },
+ {
+  "q": "What is the late payment interest under Supplier Agreement No. 09999?",
+  "unanswerable": true,
+  "type": "unanswerable"
+ },
+ {
+  "q": "What is the warranty period under Supplier Agreement No. 09871?",
+  "unanswerable": true,
+  "type": "unanswerable"
+ },
+ {
+  "q": "When was the backup generator at the Bergen depot replaced?",
+  "unanswerable": true,
+  "type": "unanswerable"
+ },
+ {
+  "q": "What is the access code for vault 12 at the Narvik depot?",
+  "unanswerable": true,
+  "type": "unanswerable"
+ },
+ {
+  "q": "How many electric trucks did Northwind buy for the Hamar depot in 2022?",
+  "unanswerable": true,
+  "type": "unanswerable"
+ },
+ {
+  "q": "What penalty applies for late delivery to the Kirkenes terminal?",
+  "unanswerable": true,
+  "type": "unanswerable"
+ },
+ {
+  "q": "Who was the night supervisor at the Molde depot?",
+  "unanswerable": true,
+  "type": "unanswerable"
+ },
+ {
+  "q": "What is the auditor reference for the Bergen depot's ISO 9001 audit?",
+  "unanswerable": true,
+  "type": "unanswerable"
+ }
+]

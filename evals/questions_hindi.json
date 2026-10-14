@@ -1,0 +1,268 @@
+[
+ {
+  "q": "Acme सप्लाई एग्रीमेंट में भुगतान की शर्तें क्या हैं?",
+  "expect": [
+   [
+    "45"
+   ]
+  ],
+  "lang": "hi",
+  "forbid": [
+   "चौतरफा"
+  ]
+ },
+ {
+  "q": "Acme देर से भुगतान पर कितना ब्याज लेता है?",
+  "expect": [
+   [
+    "1.5%",
+    "1.5 %",
+    "1.5 प्रतिशत"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Acme agreement mein unit price kitna hai?",
+  "expect": [
+   [
+    "12.40"
+   ]
+  ],
+  "lang": "hinglish",
+  "forbid": [
+   "at least",
+   "kam se kam"
+  ]
+ },
+ {
+  "q": "Acme का वॉल्यूम डिस्काउंट हर महीने कितनी यूनिट से ऊपर लागू होता है?",
+  "expect": [
+   [
+    "10,000",
+    "10000"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Acme समझौते में वारंटी कितने समय की है?",
+  "expect": [
+   [
+    "18"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Acme समझौते पर किस देश का कानून लागू होता है?",
+  "expect": [
+   [
+    "India",
+    "भारत"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Acme agreement ko convenience ke liye khatam karne ke liye kitne din ka notice chahiye?",
+  "expect": [
+   [
+    "90"
+   ]
+  ],
+  "lang": "hinglish",
+  "forbid": [
+   "at least",
+   "kam se kam"
+  ]
+ },
+ {
+  "q": "Acme समझौते में किसी गंभीर उल्लंघन को ठीक करने के लिए कितना समय मिलता है?",
+  "expect": [
+   [
+    "30"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Acme की गोपनीय जानकारी को कितने साल तक सुरक्षित रखना होगा?",
+  "expect": [
+   [
+    "5"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Acme समझौता कब से शुरू होता है?",
+  "expect": [
+   [
+    "1 March 2026",
+    "March 1, 2026",
+    "1 मार्च 2026",
+    "मार्च 1, 2026",
+    "01 March 2026"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Acme को कम से कम कितना लायबिलिटी इंश्योरेंस रखना होगा?",
+  "expect": [
+   [
+    "50,000,000",
+    "50000000",
+    "5,00,00,000",
+    "5 करोड़",
+    "50 million"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Q3 2025 में Acme ने कितनी यूनिट डिलीवर कीं?",
+  "expect": [
+   [
+    "11,300",
+    "11300"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Globex सप्लाई एग्रीमेंट में भुगतान की शर्तें क्या हैं?",
+  "expect": [
+   [
+    "30"
+   ]
+  ],
+  "forbid": [
+   "7 days",
+   "7 दिन"
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Globex agreement mein liability cap kitna hai?",
+  "expect": [
+   [
+    "500,000",
+    "500000",
+    "5,00,000"
+   ]
+  ],
+  "lang": "hinglish",
+  "forbid": [
+   "at least",
+   "kam se kam"
+  ]
+ },
+ {
+  "q": "Globex समझौते पर कौन सा कानून लागू होता है?",
+  "expect": [
+   [
+    "England",
+    "इंग्लैंड"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Globex की वारंटी कितनी लंबी है?",
+  "expect": [
+   [
+    "12"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Globex को कितने बिज़नेस डे के अंदर डिलीवरी करनी होती है?",
+  "expect": [
+   [
+    "10"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Q3 2026 में West रीजन में Vyum Labs का रेवेन्यू कितना था?",
+  "expect": [
+   [
+    "5.6"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Q3 2026 में किस रीजन का रेवेन्यू सबसे ज़्यादा था?",
+  "expect": [
+   [
+    "West",
+    "पश्चिम",
+    "वेस्ट"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "कर्मचारियों को कितने दिन की सवेतन वार्षिक छुट्टी मिलती है?",
+  "expect": [
+   [
+    "24"
+   ]
+  ],
+  "lang": "hi",
+  "forbid": [
+   "वैशाखी"
+  ]
+ },
+ {
+  "q": "Employees hafte mein kitne din remote kaam kar sakte hain?",
+  "expect": [
+   [
+    "2"
+   ]
+  ],
+  "lang": "hinglish",
+  "forbid": [
+   "at least",
+   "kam se kam"
+  ]
+ },
+ {
+  "q": "किस सप्लाई एग्रीमेंट की वारंटी ज़्यादा लंबी है, Acme या Globex?",
+  "expect": [
+   [
+    "Acme",
+    "एक्मे"
+   ],
+   [
+    "18"
+   ]
+  ],
+  "lang": "hi"
+ },
+ {
+  "q": "Acme के मुख्य कार्यकारी (CEO) का वेतन कितना है?",
+  "unanswerable": true,
+  "lang": "hi"
+ },
+ {
+  "q": "Globex देर से डिलीवरी पर कितना जुर्माना देता है?",
+  "unanswerable": true,
+  "lang": "hi"
+ },
+ {
+  "q": "Handbook mein parental leave kitne hafte ki hai?",
+  "unanswerable": true,
+  "lang": "hinglish"
+ },
+ {
+  "q": "आज सोने का भाव क्या है?",
+  "unanswerable": true,
+  "lang": "hi"
+ }
+]

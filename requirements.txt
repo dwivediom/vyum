@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+lancedb
+pyarrow
+docling
+sentence-transformers
+httpx
+python-multipart
+python-calamine>=0.8   # MIT: fast .xlsx values for large sheets (Office)
+keyring>=25           # MIT: mail account passwords live in the macOS Keychain
+onnxruntime>=1.20     # MIT: runs the Indian-script OCR models (RapidOCR)
+# dev / eval only
+pytest
+pip-licenses
+reportlab
+python-docx
+matplotlib

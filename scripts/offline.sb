@@ -1,0 +1,6 @@
+(version 1)
+; Vyum offline proof: everything allowed except network traffic leaving this machine.
+(allow default)
+(deny network-outbound)
+(allow network-outbound (remote ip "localhost:*"))
+(allow network-outbound (remote unix-socket))

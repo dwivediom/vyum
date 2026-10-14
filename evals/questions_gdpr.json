@@ -1,0 +1,17 @@
+[
+  {"q": "What is the maximum administrative fine for infringing the basic principles for processing, including the conditions for consent?", "expect": [["20 000 000", "20,000,000", "20 million"], ["4 %", "4%"]], "doc": "gdpr", "page": [82, 83]},
+  {"q": "What is the maximum fine for infringing the obligations of the controller and processor under Articles 8, 11 and 25 to 39?", "expect": [["10 000 000", "10,000,000", "10 million"], ["2 %", "2%"]], "doc": "gdpr", "page": [82]},
+  {"q": "Within how many hours must a controller notify a personal data breach to the supervisory authority?", "expect": [["72"]], "doc": "gdpr", "page": [17, 52]},
+  {"q": "Below what age does processing a child's personal data for information society services need parental consent?", "expect": [["16"]], "doc": "gdpr", "page": [37]},
+  {"q": "What is the lowest age a Member State may set for a child's consent to information society services?", "expect": [["13"]], "doc": "gdpr", "page": [37]},
+  {"q": "How quickly must a controller provide information on action taken on a data subject's request?", "expect": [["one month"]], "doc": "gdpr", "page": [40, 54]},
+  {"q": "By how long can the deadline for responding to a data subject's request be extended?", "expect": [["two further months", "two months"]], "doc": "gdpr", "page": [40]},
+  {"q": "From what date does the GDPR apply?", "expect": [["25 May 2018"]], "doc": "gdpr", "page": [65, 83, 84, 85, 86, 87, 88]},
+  {"q": "Which article of the GDPR sets out the right to erasure?", "expect": [["17"]], "doc": "gdpr", "page": [43]},
+  {"q": "Organisations employing fewer than how many persons are generally exempt from keeping records of processing activities?", "expect": [["250"]], "doc": "gdpr", "page": [3, 51]},
+  {"q": "When must a controller designate a data protection officer?", "expect": [["public authorit", "public bod"], ["large scale", "large-scale"]], "doc": "gdpr", "page": [55]},
+  {"q": "In what format must personal data be provided under the right to data portability?", "expect": [["machine-readable", "machine readable"]], "doc": "gdpr", "page": [45]},
+  {"q": "How much is the registration fee for a data controller under the GDPR?", "unanswerable": true},
+  {"q": "Who was the first Chair of the European Data Protection Board?", "unanswerable": true},
+  {"q": "How many staff does the European Data Protection Supervisor employ?", "unanswerable": true}
+]

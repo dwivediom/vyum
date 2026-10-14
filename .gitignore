@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+.pytest_cache/
+app/node_modules/
+app/dist/
+app/src-tauri/target/
+app/src-tauri/gen/
+evals/docs/
+evals/results*.json
+.venv-indictrans/
+
+# build output and generated test data
+.pytest_cache/
+pdfhost/dist/
+evals/large/
+.DS_Store
