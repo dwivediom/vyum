@@ -73,6 +73,11 @@ def prune(py_home: Path):
                 shutil.rmtree(d, ignore_errors=True)
     for junk in site.rglob("*.opt-?.pyc"):
         junk.unlink()
+    # Windows wheels carry static/import libraries and debug symbols for building C++ extensions (torch's alone are
+    # hundreds of MB); nothing loads them at run time, and they push the installer past NSIS's 2 GB limit
+    for pattern in ("*.lib", "*.pdb", "*.a"):
+        for junk in site.rglob(pattern):
+            junk.unlink()
 
 
 def engine():
@@ -134,7 +139,24 @@ def main():
         print(f"== {step}", flush=True)
         {"python": python_runtime, "engine": engine, "genoffice": genoffice, "pdfhost": pdfhost,
          "licenses": licenses}[step]()
+    report()
     print(f"assembled {OUT}")
+
+
+def report():
+    """Sizes of what ships (the Windows installer must stay under NSIS's 2 GB)."""
+    def size(p: Path) -> int:
+        return sum(f.stat().st_size for f in p.rglob("*") if f.is_file() and not f.is_symlink())
+    total = 0
+    for d in sorted(OUT.iterdir()):
+        n = size(d)
+        total += n
+        print(f"{n / 1e6:9.0f} MB  {d.name}")
+    site = next(OUT.glob("runtime/python/lib/python3*/site-packages"), None) or OUT / "runtime/python/Lib/site-packages"
+    if site.exists():
+        biggest = sorted(((size(p), p.name) for p in site.iterdir() if p.is_dir()), reverse=True)[:8]
+        print("  largest packages: " + ", ".join(f"{n} {b / 1e6:.0f} MB" for b, n in biggest))
+    print(f"{total / 1e6:9.0f} MB  total")
 
 
 if __name__ == "__main__":
